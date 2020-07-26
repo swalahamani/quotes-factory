@@ -30,6 +30,14 @@ const config = convict({
 		default: "3000",
 		env: "PORT",
 	},
+
+	logging: {
+		directory: {
+			doc: "The directory where all the logging files will be saved on.",
+			format: String,
+			default: "./logs/",
+		},
+	},
 });
 
 config.validate({ allowed: "strict" });
