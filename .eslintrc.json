@@ -5,7 +5,17 @@
 		"node": true
 	},
 	"extends": ["prettier", "airbnb-base", "plugin:node/recommended"],
-	"plugins": ["prettier"],
+	"plugins": ["prettier", "import"],
+	"settings": {
+		"import/resolver": {
+			"babel-module": {
+				"alias": {
+					"@config": "./src/config",
+					"@loaders": "./src/loaders"
+				}
+			}
+		}
+	},
 	"parserOptions": {
 		"ecmaVersion": 11,
 		"sourceType": "module"
@@ -22,6 +32,7 @@
 				"allowIndentationTabs": true
 			}
 		],
-		"node/no-unsupported-features/es-syntax": "off"
+		"node/no-unsupported-features/es-syntax": "off",
+		"node/no-missing-import": "off"
 	}
 }
