@@ -17,13 +17,43 @@ class Logger {
 		throw new Error("Invalid Usage: Use getSingletonInstance() instead");
 	}
 
+	static getFileFormat() {
+		return winston.format.combine(
+			winston.format.timestamp({
+				format: "YYYY-MM-DD HH:mm:ss",
+			}),
+			winston.format.json(),
+			winston.format.printf((info) => {
+				return `{ts: ${info.timestamp}, level: ${info.level}, message: ${info.message}}`;
+			})
+		);
+	}
+
+	static getConsoleFormat() {
+		return winston.format.combine(
+			winston.format.timestamp({
+				format: "YYYY-MM-DD HH:mm:ss",
+			}),
+			winston.format.printf((info) => {
+				return `\n⏳ ${info.timestamp} ⚡️ ${info.level}  🗞  ${info.message}`;
+			})
+		);
+	}
+
 	static generateFileTransports() {
 		return Object.keys(loggingLevels).map((loggingLevel) => {
 			const fileName = `${loggingDirectory}/log-${loggingLevel}.log`;
 			return new winston.transports.File({
+				format: this.getFileFormat(),
 				filename: fileName,
 				level: loggingLevel,
 			});
+		});
+	}
+
+	static generateConsoleTransport() {
+		return new winston.transports.Console({
+			format: this.getConsoleFormat(),
 		});
 	}
 
@@ -32,18 +62,9 @@ class Logger {
 			if (!loggerInstance) {
 				loggerInstance = winston.createLogger({
 					levels: loggingLevels,
-					format: winston.format.combine(
-						winston.format.timestamp({
-							format: "YYYY-MM-DD HH:mm:ss",
-						}),
-						winston.format.json(),
-						winston.format.printf((info) => {
-							return `{ts: ${info.timestamp}, level: ${info.level}, message: ${info.message}}`;
-						})
-					),
 					transports: [
 						...this.generateFileTransports(),
-						new winston.transports.Console(),
+						this.generateConsoleTransport(),
 					],
 				});
 			}
@@ -55,4 +76,4 @@ class Logger {
 	}
 }
 
-module.exports = Logger;
+module.exports = Logger.getSingletonInstance();
