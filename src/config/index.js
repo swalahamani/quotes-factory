@@ -4,6 +4,10 @@
  *  File : index.js
  ****************************************** */
 const convict = require("convict");
+const convictFormatWithValidator = require("convict-format-with-validator");
+const path = require("path");
+
+convict.addFormats(convictFormatWithValidator);
 
 const config = convict({
 	env: {
@@ -31,6 +35,8 @@ const config = convict({
 config.validate({ allowed: "strict" });
 
 const ENVIRONMENT = config.get("env");
-config.loadFile(`./${ENVIRONMENT}.json`);
+
+const envFilePath = path.resolve(__dirname, `./${ENVIRONMENT}.json`);
+config.loadFile(envFilePath);
 
 module.exports = config;
