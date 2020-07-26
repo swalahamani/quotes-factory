@@ -3,8 +3,10 @@
  *  Created On : Sun Jul 26 2020
  *  File : index.js
  ****************************************** */
-import Logger from "./Logger";
+import Logger from "./logger";
+import expressLoader from "./express";
 
-module.exports = {
-	Logger,
+export default async ({ expressApp }) => {
+	await expressLoader({ app: expressApp });
+	Logger.info("✌️ Express loaded");
 };
