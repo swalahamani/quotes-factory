@@ -1,0 +1,12 @@
+{
+	"editor.formatOnSave": true,
+	"eslint.alwaysShowStatus": true,
+	"prettier.packageManager": "yarn",
+	"prettier.requireConfig": true,
+	"prettier.useTabs": true,
+	"editor.formatOnPaste": true,
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": true
+	},
+	"eslint.validate": ["javascript"]
+}
